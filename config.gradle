@@ -1,0 +1,27 @@
+ext {
+    android = [
+            compile: 29,
+            tools  : '29.0.2',
+            min    : 21,
+            target : 29
+    ]
+
+    test = [
+            junit        : '4.13',
+            junit_android: '1.1.1',
+            espresso     : '3.2.0',
+    ]
+
+    lib = [
+            navigation  : '2.0.0',
+
+            appcompat   : '1.1.0',
+            core_ktx    : '1.2.0',
+
+            fragment_ktx: '1.2.2',
+
+            recyclerview: '1.2.0-alpha01',
+
+            lottie      : '3.4.0'
+    ]
+}
