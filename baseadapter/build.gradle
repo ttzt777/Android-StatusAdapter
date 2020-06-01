@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.novoda.bintray-release'
 
 def config = rootProject.ext.android
 def libs = rootProject.ext.lib
@@ -28,15 +29,16 @@ android {
         }
     }
 
-    dataBinding {
-        enabled = true
-    }
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    //忽略警告
+    lintOptions {
+        abortOnError false
     }
 }
 
@@ -50,4 +52,13 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$test.espresso"
 
     implementation "androidx.recyclerview:recyclerview:$libs.recyclerview"
+}
+
+publish {
+    userOrg = 'ttzt777'//bintray.com用户名
+    groupId = 'view'//jcenter上的路径
+    artifactId = 'baseadapter'//项目名称
+    publishVersion = '1.0.0-alpha01'//版本号
+    desc = 'Bass adapter for recycler view!'//描述，不重要
+    website = 'https://dl.bintray.com/ttzt777/bear3'//网站，最好有，不重要
 }

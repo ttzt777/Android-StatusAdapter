@@ -30,7 +30,7 @@ abstract class ABaseAdapter<T, VH : AContentViewHolder> :
     RecyclerView.Adapter<AViewHolder>() {
 
     // 状态
-    var status = Status.Null
+    var status = AdapterStatus.Null
         set(value) {
             if (field == value) {
                 return
@@ -211,11 +211,11 @@ abstract class ABaseAdapter<T, VH : AContentViewHolder> :
             }
             else -> {
                 when (status) {
-                    Status.Null -> TYPE_DATA     // 不会出现这种类型
-                    Status.Loading -> TYPE_LOADING
-                    Status.Empty -> TYPE_EMPTY
-                    Status.Error -> TYPE_ERROR
-                    Status.Content -> {
+                    AdapterStatus.Null -> TYPE_DATA     // 不会出现这种类型
+                    AdapterStatus.Loading -> TYPE_LOADING
+                    AdapterStatus.Empty -> TYPE_EMPTY
+                    AdapterStatus.Error -> TYPE_ERROR
+                    AdapterStatus.Content -> {
                         return if (noMoreData && position == itemCount - 1) {
                             TYPE_NO_MORE
                         } else {
@@ -276,19 +276,19 @@ abstract class ABaseAdapter<T, VH : AContentViewHolder> :
         return TYPE_DATA
     }
 
-    protected open fun getInitStatus(): Status {
-        return Status.Loading
+    protected open fun getInitStatus(): AdapterStatus {
+        return AdapterStatus.Loading
     }
 
     private fun onDataChanged() {
         status = if (getCustomItemCount() > 0) {
-            Status.Content
+            AdapterStatus.Content
         } else {
             if (callback != null) {
                 callback!!.onReLoad()
-                Status.Loading
+                AdapterStatus.Loading
             } else {
-                Status.Empty
+                AdapterStatus.Empty
             }
         }
     }
@@ -301,7 +301,7 @@ abstract class ABaseAdapter<T, VH : AContentViewHolder> :
 
         return if (count == 0) {
             when (status) {
-                Status.Loading, Status.Error, Status.Empty -> ++count
+                AdapterStatus.Loading, AdapterStatus.Error, AdapterStatus.Empty -> ++count
                 else -> count
             }
         } else {
@@ -313,7 +313,7 @@ abstract class ABaseAdapter<T, VH : AContentViewHolder> :
      * 获取底部NoMore的Item个数
      */
     private fun getNoMoreCount(): Int {
-        return if (noMoreData && status == Status.Content) {
+        return if (noMoreData && status == AdapterStatus.Content) {
             1
         } else {
             0
@@ -344,13 +344,5 @@ abstract class ABaseAdapter<T, VH : AContentViewHolder> :
         val footerIndexStart = getHeaderViewSize() + getContentCount()
         val footerIndexEnd = footerIndexStart + getFooterViewSize() - 1
         return position in footerIndexStart..footerIndexEnd
-    }
-
-    enum class Status {
-        Null,               // 空，初始化的状态
-        Loading,            // 加载中
-        Empty,              // 空状态，显示该列表没有内容却有一个item展示
-        Error,              // 错误状态
-        Content             // 有数据的内容状态
     }
 }
