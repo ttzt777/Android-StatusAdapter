@@ -11,7 +11,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/baseadapter" />
+            <option value="$PROJECT_DIR$/statusadapter" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
