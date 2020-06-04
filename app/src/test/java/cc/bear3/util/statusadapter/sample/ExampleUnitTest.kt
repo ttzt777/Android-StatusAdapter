@@ -1,4 +1,4 @@
-package cc.bear3.view.statusadapter
+package cc.bear3.util.statusadapter.sample
 
 import org.junit.Test
 

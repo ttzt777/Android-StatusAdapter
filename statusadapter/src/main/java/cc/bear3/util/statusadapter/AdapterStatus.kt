@@ -1,4 +1,4 @@
-package cc.bear3.view.statusadapter
+package cc.bear3.util.statusadapter
 
 enum class AdapterStatus {
         Null,               // 空，初始化的状态

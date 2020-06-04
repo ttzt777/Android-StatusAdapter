@@ -55,8 +55,9 @@ dependencies {
 }
 
 publish {
+    repoName = 'util'
     userOrg = 'ttzt777'//bintray.com用户名
-    groupId = 'cc.bear3.view.statusadapter'//jcenter上的路径
+    groupId = 'cc.bear3.util.statusadapter'//jcenter上的路径
     artifactId = 'statusadapter'//项目名称
     publishVersion = "${version_name}"//版本号
     desc = 'Bass adapter for recycler view!'//描述，不重要

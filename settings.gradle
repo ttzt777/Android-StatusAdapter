@@ -1,2 +1,2 @@
-rootProject.name='BaseAdapter'
+rootProject.name='Android-StatusAdapter'
 include ':app', 'statusadapter'

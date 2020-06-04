@@ -1,4 +1,4 @@
-package cc.bear3.view.statusadapter
+package cc.bear3.util.statusadapter
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

@@ -1,4 +1,4 @@
-package cc.bear3.view.statusadapter.sample
+package cc.bear3.util.statusadapter.sample
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
