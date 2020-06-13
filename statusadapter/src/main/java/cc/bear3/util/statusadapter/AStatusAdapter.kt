@@ -26,7 +26,7 @@ private const val TYPE_FOOTER_INIT_INDEX = 0xB0000000
  * Author: TT
  * Since: 2020-02-25
  */
-abstract class ABaseAdapter<T, VH : AContentViewHolder> :
+abstract class AStatusAdapter<T, VH : AContentViewHolder> :
     RecyclerView.Adapter<AViewHolder>() {
 
     // 状态
