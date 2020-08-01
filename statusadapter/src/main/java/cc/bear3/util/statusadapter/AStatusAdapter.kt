@@ -43,7 +43,7 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
     var callback: IAdapterCallback? = null
 
     // 数据集合
-    private val dataList = mutableListOf<T>()
+    val dataList = mutableListOf<T>()
 
     // Header View 集合
     private val mHeaderViews = SparseArray<View>()
@@ -284,7 +284,7 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
         return AdapterStatus.Loading
     }
 
-    private fun onDataChanged() {
+    fun onDataChanged() {
         status = if (getCustomItemCount() > 0) {
             AdapterStatus.Content
         } else {
