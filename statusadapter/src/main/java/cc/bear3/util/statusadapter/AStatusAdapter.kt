@@ -47,6 +47,7 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
 
     // Header View 集合
     private val mHeaderViews = SparseArray<View>()
+
     // Footer View 集合
     private val mFooterViews = SparseArray<View>()
 
@@ -103,8 +104,12 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
         return dataList[position]
     }
 
-    fun getRealPosition(position: Int) : Int {
+    fun getRealPosition(position: Int): Int {
         return position + getHeaderViewSize();
+    }
+
+    fun getDataPosition(adapterPos: Int): Int {
+        return adapterPos - getHeaderViewSize()
     }
 
     // <editor-folder desc="头部和底部Api">
@@ -197,7 +202,7 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
             is AEmptyViewHolder -> onBindEmptyViewHolder(holder)
             is AErrorViewHolder -> onBindErrorViewHolder(holder)
             is ANoMoreViewHolder -> onBindNoMoreViewHolder(holder)
-            is AContentViewHolder -> onBindCustomViewHolder(holder as VH, position)
+            is AContentViewHolder -> onBindCustomViewHolder(holder as VH, getDataPosition(position))
         }
     }
 
