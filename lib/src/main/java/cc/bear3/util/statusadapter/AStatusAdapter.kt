@@ -26,6 +26,7 @@ private const val TYPE_FOOTER_INIT_INDEX = 0xB0000000
  * Author: TT
  * Since: 2020-02-25
  */
+@Suppress("MemberVisibilityCanBePrivate", "unused", "UNCHECKED_CAST")
 abstract class AStatusAdapter<T, VH : AContentViewHolder> :
     RecyclerView.Adapter<AViewHolder>() {
 
@@ -58,10 +59,7 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
     private var mHeaderTypeIndex = TYPE_HEADER_INIT_INDEX
     private var mFooterTypeIndex = TYPE_FOOTER_INIT_INDEX
 
-    init {
-        status = getInitStatus()
-    }
-
+    @JvmOverloads
     fun dataRefresh(targetList: List<T>?, noMoreData: Boolean = false) {
         dataList.clear()
         targetList?.let {
@@ -74,6 +72,7 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
         notifyDataSetChanged()
     }
 
+    @JvmOverloads
     fun dataMore(targetList: List<T>?, noMoreData: Boolean = false) {
         if (targetList.isNullOrEmpty()) {
             return
@@ -105,7 +104,7 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
     }
 
     fun getRealPosition(position: Int): Int {
-        return position + getHeaderViewSize();
+        return position + getHeaderViewSize()
     }
 
     fun getDataPosition(adapterPos: Int): Int {
@@ -283,10 +282,6 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
 
     protected open fun getCustomViewType(position: Int): Int {
         return TYPE_DATA
-    }
-
-    protected open fun getInitStatus(): AdapterStatus {
-        return AdapterStatus.Loading
     }
 
     fun onDataChanged() {

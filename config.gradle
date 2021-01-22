@@ -1,27 +1,28 @@
 ext {
-    android = [
-            compile: 29,
-            tools  : '29.0.2',
-            min    : 21,
-            target : 29
-    ]
+    compileSdkVersion = 30
+    buildToolsVersion = '30.0.2'
+    minSdkVersion = 21
+    targetSdkVersion = 30
 
-    test = [
-            junit        : '4.13',
-            junit_android: '1.1.1',
-            espresso     : '3.2.0',
-    ]
+    kotlinVersion = "1.3.72"
 
-    lib = [
-            navigation  : '2.0.0',
+    ktxVersion = '1.3.2'
+    appcompatVersion = '1.2.0'
+    lifecycleVersion = '2.2.0'
+    constraintLayoutVersion = '2.0.4'
+    navigationVersion = "2.3.2"
+    recyclerviewVersion = "1.2.0-alpha05"
 
-            appcompat   : '1.1.0',
-            core_ktx    : '1.3.1',
+    gradleVersion = "4.1.1"
+    bintrayVersion = "1.8.5"
 
-            fragment_ktx: '1.2.2',
+    materialVersion = '1.2.1'
+    zxingVersion = '3.4.0'
 
-            recyclerview: '1.2.0-alpha05',
+    statusAdapterVersion = '1.0.0-alpha04'
 
-            lottie      : '3.4.0'
-    ]
+    refreshLayoutVersion = '2.0.1'
+    immersionbarVersion = '3.0.0'
+    timberVersion = '4.7.1'
+
 }
