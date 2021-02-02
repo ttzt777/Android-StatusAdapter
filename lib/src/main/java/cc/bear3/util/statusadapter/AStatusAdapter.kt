@@ -11,10 +11,10 @@ private const val TYPE_DATA = 0x7FFF0000        // 数据默认
 private const val TYPE_LOADING = 0x7FFF0010     // 加载
 private const val TYPE_EMPTY = 0x7FFF0011       // 空状态
 private const val TYPE_ERROR = 0x7FFF0012       // 错误状态
-private const val TYPE_NO_MORE = 0x7FFF0013    // 没有更多 - 底部
+private const val TYPE_NO_MORE = 0x7FFF0013     // 没有更多 - 底部
 
-private const val TYPE_HEADER_INIT_INDEX = 0x80000000
-private const val TYPE_FOOTER_INIT_INDEX = 0xB0000000
+private const val TYPE_HEADER_INIT_INDEX = 0x80000000   // Header索引（viewType）起始值
+private const val TYPE_FOOTER_INIT_INDEX = 0xB0000000   // Footer索引（viewType）起始值
 
 /**
  * Description: RecyclerView 适配器基类
@@ -33,10 +33,6 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
     // 状态
     var status = AdapterStatus.Null
         set(value) {
-            if (field == value) {
-                return
-            }
-
             field = value
             notifyDataSetChanged()
         }
@@ -44,13 +40,19 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
     var callback: IAdapterCallback? = null
 
     // 数据集合
-    val dataList = mutableListOf<T>()
+    val dataList by lazy {
+        mutableListOf<T>()
+    }
 
     // Header View 集合
-    private val mHeaderViews = SparseArray<View>()
+    private val mHeaderViews by lazy {
+        SparseArray<View>()
+    }
 
     // Footer View 集合
-    private val mFooterViews = SparseArray<View>()
+    private val mFooterViews by lazy {
+        SparseArray<View>()
+    }
 
     // 没有更多数据标记
     private var noMoreData = false
@@ -59,6 +61,9 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
     private var mHeaderTypeIndex = TYPE_HEADER_INIT_INDEX
     private var mFooterTypeIndex = TYPE_FOOTER_INIT_INDEX
 
+    /**
+     * 刷新数据
+     */
     @JvmOverloads
     fun dataRefresh(targetList: List<T>?, noMoreData: Boolean = false) {
         dataList.clear()
@@ -69,49 +74,58 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
         this.noMoreData = noMoreData
 
         onDataChanged()
-        notifyDataSetChanged()
     }
 
+    /**
+     * 更多数据，拼接方式
+     */
     @JvmOverloads
     fun dataMore(targetList: List<T>?, noMoreData: Boolean = false) {
-        if (targetList.isNullOrEmpty()) {
-            return
+        targetList?.let {
+            dataList.addAll(it)
         }
-
-        dataList.addAll(targetList)
 
         this.noMoreData = noMoreData
 
         onDataChanged()
-        notifyDataSetChanged()
     }
 
-//    fun dataRemove(position: Int) {
-//        if (position < 0 || position >= dataList.size) {
-//            return
-//        }
-//
-//        dataList.removeAt(position)
-//        notifyItemRemoved(position)
-//    }
-//
-//    fun dataRemove(data: T) {
-//
-//    }
-
+    /**
+     * 获取指定position的数据
+     */
     fun getData(position: Int): T {
         return dataList[position]
     }
 
+    /**
+     * 根据数据的position获取adapterPosition
+     */
     fun getRealPosition(position: Int): Int {
         return position + getHeaderViewSize()
     }
 
+    /**
+     * 根据adapterPosition获取数据的position
+     */
     fun getDataPosition(adapterPos: Int): Int {
         return adapterPos - getHeaderViewSize()
     }
 
+    /**
+     * 检查数据是否为空，用于itemRemove之后触发页面状态及reload
+     */
+    fun checkDataEmpty() {
+        if (getCustomItemCount() > 0) {
+            return
+        }
+
+        status = callback?.onReLoad() ?: AdapterStatus.Empty
+    }
+
     // <editor-folder desc="头部和底部Api">
+    /**
+     * 添加HeaderView
+     */
     open fun addHeaderView(vararg views: View) {
         var notify = false
         for (view in views) {
@@ -125,6 +139,9 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
         }
     }
 
+    /**
+     * 添加FooterView
+     */
     open fun addFooterView(vararg views: View) {
         var notify = false
         for (view in views) {
@@ -138,6 +155,9 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
         }
     }
 
+    /**
+     * 移除指定HeaderView
+     */
     open fun removeHeaderView(view: View) {
         val key = mHeaderViews.indexOfValue(view)
         if (key != -1) {
@@ -146,10 +166,17 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
         }
     }
 
+    /**
+     * 移除所有HeaderView
+     */
     open fun removeAllHeaderView() {
         mHeaderViews.clear()
+        notifyDataSetChanged()
     }
 
+    /**
+     * 移除指定的FooterView
+     */
     open fun removeFooterView(view: View) {
         val key = mHeaderViews.indexOfValue(view)
         if (key != -1) {
@@ -158,14 +185,24 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
         }
     }
 
+    /**
+     * 移除所有FooterView
+     */
     open fun removeAllFooterView() {
         mFooterViews.clear()
+        notifyDataSetChanged()
     }
 
+    /**
+     * 获取HeaderView的个数
+     */
     open fun getHeaderViewSize(): Int {
         return mHeaderViews.size()
     }
 
+    /**
+     * 获取FooterView的个数
+     */
     open fun getFooterViewSize(): Int {
         return mFooterViews.size()
     }
@@ -240,60 +277,95 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
         }
     }
 
+    /**
+     * 创建实际数据的VH
+     */
     protected abstract fun onCreateCustomViewHolder(
         inflater: LayoutInflater,
         parent: ViewGroup,
         viewType: Int
     ): VH
 
+    /**
+     * 绑定手机数据的VH
+     */
     protected abstract fun onBindCustomViewHolder(holder: VH, position: Int)
 
+    /**
+     * 创建Loading状态的VH
+     */
     protected abstract fun onCreateLoadingViewHolder(
         inflater: LayoutInflater,
         parent: ViewGroup
     ): ALoadingViewHolder
 
+    /**
+     * 绑定Loading状态的VH
+     */
+    protected abstract fun onBindLoadingViewHolder(holder: ALoadingViewHolder)
+
+    /**
+     * 创建Empty状态的VH
+     */
     protected abstract fun onCreateEmptyViewHolder(
         inflater: LayoutInflater,
         parent: ViewGroup
     ): AEmptyViewHolder
 
+    /**
+     * 绑定Empty状态的VH
+     */
+    protected abstract fun onBindEmptyViewHolder(holder: AEmptyViewHolder)
+
+
+    /**
+     * 创建Error状态的VH
+     */
     protected abstract fun onCreateLErrorViewHolder(
         inflater: LayoutInflater,
         parent: ViewGroup
     ): AErrorViewHolder
 
+    /**
+     * 绑定Error状态的VH
+     */
+    protected abstract fun onBindErrorViewHolder(holder: AErrorViewHolder)
+
+    /**
+     * 创建NoMore状态的VH
+     */
     protected abstract fun onCreateNoMoreViewHolder(
         inflater: LayoutInflater,
         parent: ViewGroup
     ): ANoMoreViewHolder
 
-    protected abstract fun onBindLoadingViewHolder(holder: ALoadingViewHolder)
-
-    protected abstract fun onBindEmptyViewHolder(holder: AEmptyViewHolder)
-
-    protected abstract fun onBindErrorViewHolder(holder: AErrorViewHolder)
-
+    /**
+     * 绑定NoMore状态的VH
+     */
     protected abstract fun onBindNoMoreViewHolder(holder: ANoMoreViewHolder)
 
+    /**
+     * 获取实际数据的个数
+     */
     protected open fun getCustomItemCount(): Int {
         return dataList.size
     }
 
+    /**
+     * 获取手机数据的viewType
+     */
     protected open fun getCustomViewType(position: Int): Int {
         return TYPE_DATA
     }
 
-    fun onDataChanged() {
+    /**
+     * 数据发生改变后状态改变
+     */
+    private fun onDataChanged() {
         status = if (getCustomItemCount() > 0) {
             AdapterStatus.Content
         } else {
-            if (callback != null) {
-                callback!!.onReLoad()
-                AdapterStatus.Loading
-            } else {
-                AdapterStatus.Empty
-            }
+            AdapterStatus.Empty
         }
     }
 
@@ -324,6 +396,9 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
         }
     }
 
+    /**
+     * 获取HeaderView的索引（viewType）
+     */
     private fun getHeaderTypeIndex(): Int {
         mHeaderTypeIndex++
         if (mHeaderTypeIndex >= TYPE_FOOTER_INIT_INDEX) {
@@ -332,6 +407,9 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
         return mHeaderTypeIndex.toInt()
     }
 
+    /**
+     * 获取FooterView的索引（viewType）
+     */
     private fun getFooterTypeIndex(): Int {
         mFooterTypeIndex++
         if (mFooterTypeIndex >= 0xFFFFFFFF) {
@@ -340,13 +418,19 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
         return mFooterTypeIndex.toInt()
     }
 
-    private fun isHeaderPosition(position: Int): Boolean {
-        return position < getHeaderViewSize()
+    /**
+     * 判断adapterPosition是否为HeaderView的position
+     */
+    private fun isHeaderPosition(adapterPos: Int): Boolean {
+        return adapterPos < getHeaderViewSize()
     }
 
-    private fun isFooterPosition(position: Int): Boolean {
+    /**
+     * 判断adapterPosition是否为FooterView的position
+     */
+    private fun isFooterPosition(adapterPos: Int): Boolean {
         val footerIndexStart = getHeaderViewSize() + getContentCount()
         val footerIndexEnd = footerIndexStart + getFooterViewSize() - 1
-        return position in footerIndexStart..footerIndexEnd
+        return adapterPos in footerIndexStart..footerIndexEnd
     }
 }
