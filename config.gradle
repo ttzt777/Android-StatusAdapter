@@ -18,7 +18,7 @@ ext {
     recyclerviewVersion = "1.2.1"
     viewpager2Version = '1.0.0'
 
-    gradleVersion = "4.1.1"
+    gradleVersion = "4.2.0"
     mavenVersion = "2.1"
 
     materialVersion = '1.4.0'
