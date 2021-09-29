@@ -6,26 +6,23 @@ buildscript {
 
     repositories {
         google()
-        jcenter()
+        mavenCentral()
 
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$gradleVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "com.github.dcendents:android-maven-gradle-plugin:$mavenVersion"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
 
-plugins {
-    id "com.jfrog.bintray" version "$bintrayVersion"
-}
-
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
 
     }
 }

@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -28,7 +27,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(path: ':lib')
+    implementation project(path: ':adapter-kernal')
+    implementation project(path: ':adapter-fast')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 

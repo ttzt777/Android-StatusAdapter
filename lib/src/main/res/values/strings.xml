@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">BaseAdapter</string>
-
-    <string name="item_default_" translatable="false">dff</string>
-
-    <string name="default_empty_hint">这里空空如也</string>
-    <string name="default_nomore_hint">没有更多了</string>
-    <string name="default_error_hint">网络连接失败，请检查你的网络设置</string>
-</resources>
