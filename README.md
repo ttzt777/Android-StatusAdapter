@@ -1,6 +1,22 @@
-# Android-StatusAdapter
 [![](https://jitpack.io/v/ttzt777/Android-StatusAdapter.svg)](https://jitpack.io/#ttzt777/Android-StatusAdapter)
-### **adpater-kernal**
+## 引用方式
+- 在项目根目录的build.gradle文件中添加
+```groovy
+    allprojects {
+        repositories {
+            ...
+            maven { url 'https://jitpack.io' }
+        }
+    }
+```
+- 对应module添加依赖
+```groovy
+    dependencies {
+        implementation 'com.github.ttzt777.Android-StatusAdapter:adapter-kernel:1.0.0'
+        implementation 'com.github.ttzt777.Android-StatusAdapter:adapter-fast:1.0.0'
+    }
+```
+### **adapter-kernel**
 - 支持无数据、空状态、加载状态、错误状态、正常数据状态五种
 - 支持添加及移除Header、Footer
 - 支持正常状态下数据被移除后的回调

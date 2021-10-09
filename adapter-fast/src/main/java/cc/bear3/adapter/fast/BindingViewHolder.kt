@@ -3,7 +3,7 @@ package cc.bear3.adapter.fast
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
-import cc.bear3.adapter.kernal.AContentViewHolder
+import cc.bear3.adapter.kernel.AContentViewHolder
 
 open class BindingViewHolder<VB : ViewBinding>(
     parent: ViewGroup,

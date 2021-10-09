@@ -1,4 +1,4 @@
-package cc.bear3.adapter.kernal
+package cc.bear3.adapter.kernel
 
 /**
  * Description:

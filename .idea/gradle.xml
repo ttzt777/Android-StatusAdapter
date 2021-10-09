@@ -11,7 +11,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/adapter-fast" />
-            <option value="$PROJECT_DIR$/adapter-kernal" />
+            <option value="$PROJECT_DIR$/adapter-kernel" />
             <option value="$PROJECT_DIR$/app" />
           </set>
         </option>

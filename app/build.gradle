@@ -31,7 +31,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(path: ':adapter-kernal')
+    implementation project(path: ':adapter-kernel')
     implementation project(path: ':adapter-fast')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
