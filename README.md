@@ -12,8 +12,8 @@
 - 对应module添加依赖
 ```groovy
     dependencies {
-        implementation 'com.github.ttzt777.Android-StatusAdapter:adapter-kernel:1.0.0'
-        implementation 'com.github.ttzt777.Android-StatusAdapter:adapter-fast:1.0.0'
+        implementation 'com.github.ttzt777.Android-StatusAdapter:adapter-kernel:1.0.1'
+        implementation 'com.github.ttzt777.Android-StatusAdapter:adapter-fast:1.0.1'
     }
 ```
 ### **adapter-kernel**
