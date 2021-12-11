@@ -41,4 +41,5 @@ dependencies {
 
     implementation "com.google.android.material:material:$materialVersion"
 
+    implementation "androidx.recyclerview:recyclerview:$recyclerviewVersion"
 }

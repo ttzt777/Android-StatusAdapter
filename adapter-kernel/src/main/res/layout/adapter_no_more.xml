@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/adapter_no_more_height">
+    android:layout_height="@dimen/adapter_no_more_height"
+    android:gravity="center"
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/v_icon"
@@ -10,12 +11,7 @@
         android:layout_height="24dp"
         android:padding="4dp"
         android:scaleType="fitXY"
-        android:src="@mipmap/adapter_ic_no_more"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/v_hint"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:src="@mipmap/adapter_ic_no_more" />
 
     <TextView
         android:id="@+id/v_hint"
@@ -23,10 +19,6 @@
         android:layout_height="wrap_content"
         android:text="@string/adapter_no_more"
         android:textColor="#FFCCCCCC"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/v_icon"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="12sp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
