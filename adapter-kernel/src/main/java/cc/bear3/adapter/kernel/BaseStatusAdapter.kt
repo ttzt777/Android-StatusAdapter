@@ -19,44 +19,44 @@ abstract class BaseStatusAdapter<T, VH : AContentViewHolder> :
         inflater: LayoutInflater,
         parent: ViewGroup
     ): AEmptyViewHolder {
-        return EmptyViewHolder(parent.inflate(R.layout.adapter_empty))
+        return StatusDecorator.proxy().onCreateEmptyViewHolder(inflater, parent)
     }
 
     override fun onCreateLErrorViewHolder(
         inflater: LayoutInflater,
         parent: ViewGroup
     ): AErrorViewHolder {
-        return ErrorViewHolder(parent.inflate(R.layout.adapter_empty))
+        return StatusDecorator.proxy().onCreateLErrorViewHolder(inflater, parent)
     }
 
     override fun onCreateLoadingViewHolder(
         inflater: LayoutInflater,
         parent: ViewGroup
     ): ALoadingViewHolder {
-        return LoadingViewHolder(parent.inflate(R.layout.adapter_loading))
+        return StatusDecorator.proxy().onCreateLoadingViewHolder(inflater, parent)
     }
 
     override fun onCreateNoMoreViewHolder(
         inflater: LayoutInflater,
         parent: ViewGroup
     ): ANoMoreViewHolder {
-        return NoMoreViewHolder(parent.inflate(R.layout.adapter_no_more))
+        return StatusDecorator.proxy().onCreateNoMoreViewHolder(inflater, parent)
     }
 
     override fun onBindEmptyViewHolder(holder: AEmptyViewHolder) {
-
+        StatusDecorator.proxy().onBindEmptyViewHolder(holder)
     }
 
     override fun onBindErrorViewHolder(holder: AErrorViewHolder) {
-
+        StatusDecorator.proxy().onBindErrorViewHolder(holder)
     }
 
     override fun onBindLoadingViewHolder(holder: ALoadingViewHolder) {
-
+        StatusDecorator.proxy().onBindLoadingViewHolder(holder)
     }
 
     override fun onBindNoMoreViewHolder(holder: ANoMoreViewHolder) {
-
+        StatusDecorator.proxy().onBindNoMoreViewHolder(holder)
     }
 
     open class EmptyViewHolder(view: View) : AEmptyViewHolder(view)
