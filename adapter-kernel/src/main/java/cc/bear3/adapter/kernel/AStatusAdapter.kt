@@ -28,7 +28,7 @@ private const val TYPE_FOOTER_INIT_INDEX = 0xB0000000   // Footer索引（viewTy
  */
 @Suppress("MemberVisibilityCanBePrivate", "unused", "UNCHECKED_CAST")
 abstract class AStatusAdapter<T, VH : AContentViewHolder> :
-    RecyclerView.Adapter<AViewHolder>() {
+    RecyclerView.Adapter<AViewHolder>(), IStatusDecorator {
 
     // 状态
     var status = AdapterStatus.Null
@@ -287,62 +287,9 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
     ): VH
 
     /**
-     * 绑定手机数据的VH
+     * 绑定实际数据的VH
      */
     protected abstract fun onBindCustomViewHolder(holder: VH, position: Int)
-
-    /**
-     * 创建Loading状态的VH
-     */
-    protected abstract fun onCreateLoadingViewHolder(
-        inflater: LayoutInflater,
-        parent: ViewGroup
-    ): ALoadingViewHolder
-
-    /**
-     * 绑定Loading状态的VH
-     */
-    protected abstract fun onBindLoadingViewHolder(holder: ALoadingViewHolder)
-
-    /**
-     * 创建Empty状态的VH
-     */
-    protected abstract fun onCreateEmptyViewHolder(
-        inflater: LayoutInflater,
-        parent: ViewGroup
-    ): AEmptyViewHolder
-
-    /**
-     * 绑定Empty状态的VH
-     */
-    protected abstract fun onBindEmptyViewHolder(holder: AEmptyViewHolder)
-
-
-    /**
-     * 创建Error状态的VH
-     */
-    protected abstract fun onCreateLErrorViewHolder(
-        inflater: LayoutInflater,
-        parent: ViewGroup
-    ): AErrorViewHolder
-
-    /**
-     * 绑定Error状态的VH
-     */
-    protected abstract fun onBindErrorViewHolder(holder: AErrorViewHolder)
-
-    /**
-     * 创建NoMore状态的VH
-     */
-    protected abstract fun onCreateNoMoreViewHolder(
-        inflater: LayoutInflater,
-        parent: ViewGroup
-    ): ANoMoreViewHolder
-
-    /**
-     * 绑定NoMore状态的VH
-     */
-    protected abstract fun onBindNoMoreViewHolder(holder: ANoMoreViewHolder)
 
     /**
      * 获取实际数据的个数

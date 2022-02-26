@@ -3,15 +3,15 @@ package cc.bear3.adapter.fast
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
-import cc.bear3.adapter.kernel.BaseStatusAdapter
+import cc.bear3.adapter.kernel.AStatusAdapter
 
 /**
  *
  * @author TT
  * @since 2021-6-2
  */
-abstract class SingleFastAdapter<T, VB : ViewBinding>(private val inflate: (LayoutInflater, ViewGroup?, Boolean) -> VB) :
-    BaseStatusAdapter<T, BindingViewHolder<VB>>() {
+abstract class ASingleFastAdapter<T, VB : ViewBinding>(private val inflate: (LayoutInflater, ViewGroup?, Boolean) -> VB) :
+    AStatusAdapter<T, BindingViewHolder<VB>>() {
     final override fun onBindCustomViewHolder(holder: BindingViewHolder<VB>, position: Int) {
         convert(holder.binding, getData(position))
     }
