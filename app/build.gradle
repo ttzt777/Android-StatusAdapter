@@ -5,6 +5,10 @@ android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
 
+    buildFeatures {
+        viewBinding true
+    }
+
     defaultConfig {
         applicationId "cc.bear3.util.statusadapter.sample"
         minSdkVersion rootProject.minSdkVersion

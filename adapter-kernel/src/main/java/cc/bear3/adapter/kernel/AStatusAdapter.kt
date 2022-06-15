@@ -31,7 +31,7 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
     RecyclerView.Adapter<AViewHolder>(), IStatusDecorator {
 
     // 状态
-    var status = AdapterStatus.Null
+    var status: AdapterStatus.Status = AdapterStatus.Null
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -97,12 +97,59 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
         return dataList[position]
     }
 
+    // <editor-folder desc="notifyxxx方法集，代替notifyDataSetChanged等">
     /**
-     * 根据数据的position获取adapterPosition
+     * 通知全局数据发生改变
      */
-    fun getRealPosition(position: Int): Int {
-        return position + getHeaderViewSize()
+    fun notifyChanged() {
+        onDataChanged()
     }
+
+    /**
+     * 通知部分数据发生改变
+     * 此时一定是在Content模式下，无需校验status
+     */
+    @JvmOverloads
+    fun notifyChanged(positionStart: Int, itemCount: Int = 1) {
+        notifyItemRangeChanged(positionStart + getHeaderViewSize(), itemCount)
+    }
+
+    /**
+     * 通知添加部分Item
+     * 此时状态可能发生改变
+     */
+    @JvmOverloads
+    fun notifyInsert(positionStart: Int, itemCount: Int = 1) {
+        if (status is AdapterStatus.Content) {
+            // 当前是Content状态，通知增加数据即可
+            notifyItemRangeInserted(positionStart + getHeaderViewSize(), itemCount)
+        } else {
+            onDataChanged()
+        }
+    }
+
+    /**
+     * 通知移除部分Item
+     * 此时状态一定为Content，变更后可能发生改变
+     */
+    @JvmOverloads
+    fun notifyRemoved(positionStart: Int, itemCount: Int = 1) {
+        if (dataList.size == 0) {
+            // 被移除后的dataSize变为0了
+            status = callback?.onReLoad() ?: AdapterStatus.Empty
+        } else {
+            notifyItemRangeRemoved(positionStart + getHeaderViewSize(), itemCount)
+        }
+    }
+
+    /**
+     * 通知item发生交换
+     */
+    fun notifyMoved(fromPosition: Int, toPosition: Int) {
+        val headerSize = getHeaderViewSize()
+        notifyItemMoved(fromPosition + headerSize, toPosition + headerSize)
+    }
+    // </editor-folder>
 
     /**
      * 根据adapterPosition获取数据的position
@@ -111,9 +158,19 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
         return adapterPos - getHeaderViewSize()
     }
 
+    // <editor-folder desc="弃用">
+    /**
+     * 根据数据的position获取adapterPosition
+     */
+    @Deprecated("添加notifyxxx方法集后，不会有此需求了", ReplaceWith("使用notifyxxx方法集代替Adapter的原生notifyItemInsert等"))
+    fun getRealPosition(position: Int): Int {
+        return position + getHeaderViewSize()
+    }
+
     /**
      * 检查数据是否为空，用于itemRemove之后触发页面状态及reload
      */
+    @Deprecated("添加notifyxxx方法集后，不会有此需求了", ReplaceWith("使用notifyxxx方法集代替Adapter的原生notifyItemRemoved等"))
     fun checkDataEmpty() {
         if (getCustomItemCount() > 0) {
             return
@@ -121,6 +178,7 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
 
         status = callback?.onReLoad() ?: AdapterStatus.Empty
     }
+    // </editor-folder>
 
     // <editor-folder desc="头部和底部Api">
     /**
@@ -256,11 +314,11 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
             }
             else -> {
                 when (status) {
-                    AdapterStatus.Null -> TYPE_DATA     // 不会出现这种类型
-                    AdapterStatus.Loading -> TYPE_LOADING
-                    AdapterStatus.Empty -> TYPE_EMPTY
-                    AdapterStatus.Error -> TYPE_ERROR
-                    AdapterStatus.Content -> {
+                    is AdapterStatus.Null -> TYPE_DATA     // 不会出现这种类型
+                    is AdapterStatus.Loading -> TYPE_LOADING
+                    is AdapterStatus.Empty -> TYPE_EMPTY
+                    is AdapterStatus.Error -> TYPE_ERROR
+                    is AdapterStatus.Content -> {
                         return if (noMoreData && position == itemCount - 1) {
                             TYPE_NO_MORE
                         } else {
@@ -324,7 +382,7 @@ abstract class AStatusAdapter<T, VH : AContentViewHolder> :
 
         return if (count == 0) {
             when (status) {
-                AdapterStatus.Loading, AdapterStatus.Error, AdapterStatus.Empty -> ++count
+                is AdapterStatus.Loading, is AdapterStatus.Error, is AdapterStatus.Empty -> ++count
                 else -> count
             }
         } else {
