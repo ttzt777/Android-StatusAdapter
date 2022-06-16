@@ -16,10 +16,10 @@ class AdapterStatus {
 
     // 错误状态
     class Error(
-        @DrawableRes drawableResId: Int = 0,
-        message: String? = null,
-        obj1: Any? = null,
-        obj2: Any? = null
+        @DrawableRes val drawableResId: Int = 0,
+        val message: String? = null,
+        val obj1: Any? = null,
+        val obj2: Any? = null
     ) : Status
 
     // 有数据的内容状态
